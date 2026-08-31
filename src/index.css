@@ -56,7 +56,6 @@ body {
   color: white;
 }
 
-/* Scrollbar oscuro tipo OS */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -72,7 +71,6 @@ body {
   background: var(--color-text-dim);
 }
 
-/* Animación del cursor parpadeante del terminal */
 @keyframes blink {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
@@ -81,7 +79,6 @@ body {
   animation: blink 1s step-start infinite;
 }
 
-/* Animación del boot screen */
 @keyframes bootBar {
   0% { width: 0%; }
   100% { width: 100%; }
@@ -90,7 +87,23 @@ body {
   animation: bootBar 2.5s ease-in-out forwards;
 }
 
-/* Respetar preferencias de movimiento reducido */
+@keyframes desktopIconIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.desktop-icon {
+  opacity: 0;
+  animation: desktopIconIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes iconPing {
+  0% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5); }
+  100% { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0); }
+}
+.desktop-icon:active .icon-tile {
+  animation: iconPing 0.4s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
