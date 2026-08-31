@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { profile } from '../../data/portfolio'
-import { Mail, Send } from 'lucide-react'
+import { Mail, Send, Globe } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '../ui/icons'
 import type { AppComponent } from './types'
 
@@ -45,6 +45,16 @@ const ContactApp: AppComponent = () => {
         >
           <LinkedinIcon width={16} height={16} /> LinkedIn
         </a>
+        {profile.socials.blog && (
+          <a
+            href={profile.socials.blog}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-window-alt)] px-3 py-2 text-sm text-[var(--color-text)] transition-colors hover:border-primary/50 hover:text-primary-light"
+          >
+            <Globe size={16} /> Sitio web
+          </a>
+        )}
       </div>
 
       {sent ? (

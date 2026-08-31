@@ -9,7 +9,7 @@ export interface Profile {
   socials: {
     github: string
     linkedin: string
-    twitter?: string
+    blog?: string
   }
 }
 
