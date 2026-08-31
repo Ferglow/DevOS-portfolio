@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/DevOS-portfolio/',
   plugins: [react(), tailwindcss()],
   test: {
     environment: 'jsdom',
