@@ -1,4 +1,5 @@
-import { useRef, useEffect, type PointerEvent } from 'react'
+import { useRef, useEffect, useState, type PointerEvent } from 'react'
+import { motion } from 'framer-motion'
 import { X, Minus, Square, Copy } from 'lucide-react'
 import { useWindowStore } from '../../../store/windowStore'
 import { getAppDefinition } from '../../../data/apps'
@@ -10,6 +11,23 @@ interface WindowFrameProps {
 }
 
 const RESIZE_HANDLE = 8
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof globalThis.matchMedia === 'function'
+        ? globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
+        : false,
+  )
+  useEffect(() => {
+    if (typeof globalThis.matchMedia !== 'function') return
+    const mq = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return reduced
+}
 
 export function WindowFrame({ window }: WindowFrameProps) {
   const {
@@ -74,12 +92,23 @@ export function WindowFrame({ window }: WindowFrameProps) {
     return () => globalThis.removeEventListener('pointerup', onUp)
   }, [])
 
+  // Cerrar con Escape solo si la ventana está enfocada
+  useEffect(() => {
+    if (!window.isFocused) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeWindow(window.id)
+    }
+    globalThis.addEventListener('keydown', onKey)
+    return () => globalThis.removeEventListener('keydown', onKey)
+  }, [window.isFocused, window.id, closeWindow])
+
+  const reducedMotion = usePrefersReducedMotion()
   const focusClass = window.isFocused
     ? 'ring-1 ring-primary/40 shadow-2xl shadow-black/60'
     : 'shadow-lg shadow-black/30 opacity-95'
 
   return (
-    <div
+    <motion.div
       data-testid="window-frame"
       className={`absolute flex flex-col overflow-hidden rounded-lg bg-[var(--color-window)] text-[var(--color-text)] ${focusClass}`}
       style={{
@@ -89,6 +118,10 @@ export function WindowFrame({ window }: WindowFrameProps) {
         height: window.maximized ? '100%' : window.height,
         zIndex: window.zIndex,
       }}
+      initial={reducedMotion ? false : { opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+      layout={reducedMotion ? false : true}
       onPointerDown={() => focusWindow(window.id)}
       role="dialog"
       aria-label={def?.name ?? window.appId}
@@ -160,6 +193,6 @@ export function WindowFrame({ window }: WindowFrameProps) {
           </svg>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

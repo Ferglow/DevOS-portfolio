@@ -31,6 +31,7 @@ const TerminalApp: AppComponent = ({ windowId }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const closeWindow = useWindowStore((s) => s.closeWindow)
+  const openApp = useWindowStore((s) => s.openApp)
 
   const echo = (text: string, isInput = false) => {
     setLines((prev) => [...prev, { type: isInput ? 'input' : 'output', text }])
@@ -51,6 +52,15 @@ const TerminalApp: AppComponent = ({ windowId }) => {
       }
       if (out === '__CLOSE__') {
         closeWindow(windowId)
+        continue
+      }
+      if (out.startsWith('__OPEN_')) {
+        const app = out.slice('__OPEN_'.length, -2)
+        openApp(app)
+        continue
+      }
+      if (out === '__KONAMI__') {
+        globalThis.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }))
       }
       echo(out)
     }

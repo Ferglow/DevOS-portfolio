@@ -34,7 +34,9 @@ export function runCommand(input: string, ctx: TerminalContext): CommandResult {
           '  projects    Lista de proyectos',
           '  cd <proyecto>  Detalle de un proyecto',
           '  clear       Limpia la terminal',
+          '  date        Fecha y hora actual',
           '  echo <texto>   Repite un texto',
+          '  open <app>  Abre una aplicación (projects, skills...)',
           '  matrix      Modo matrix 🟢',
           '  exit        Cierra la terminal',
           '  about       Sobre el DevOS',
@@ -95,6 +97,26 @@ export function runCommand(input: string, ctx: TerminalContext): CommandResult {
     case 'clear':
       return { output: ['__CLEAR__'] }
 
+    case 'date':
+      return { output: [new Date().toLocaleString('es-ES')] }
+
+    case 'open': {
+      if (args.length === 0) {
+        return { output: ['Uso: open <app>. Prueba: open projects'] }
+      }
+      const app = args[0].toLowerCase()
+      const known = ['about', 'projects', 'skills', 'experience', 'contact', 'terminal']
+      if (!known.includes(app)) {
+        return { output: [`No se encontró la app "${app}". Apps: ${known.join(', ')}`] }
+      }
+      // Marca interna: la TerminalApp la interpreta para abrir la ventana.
+      // El id coincide con el appId del window manager.
+      return { output: [`__OPEN_${app}__`, `Abriendo ${app}...`] }
+    }
+
+    case 'konami':
+      return { output: ['__KONAMI__', '🎉 Secuencia desbloqueada.'] }
+
     case 'echo':
       return { output: [args.join(' ') || ''] }
 
@@ -135,6 +157,8 @@ export const COMMAND_NAMES = [
   'projects',
   'cd',
   'clear',
+  'date',
+  'open',
   'echo',
   'matrix',
   'about',
