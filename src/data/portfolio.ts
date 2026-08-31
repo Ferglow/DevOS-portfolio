@@ -115,6 +115,44 @@ export const projects: Project[] = [
     year: '2026',
     repoUrl: 'https://github.com/Ferglow/agenda-contactos',
   },
+  {
+    id: 'estudiantes',
+    title: 'Gestión de Estudiantes',
+    description: 'CRUD full-stack de estudiantes con Java, Spring Boot y MySQL: matrícula, consulta y administración de registros.',
+    longDescription:
+      'Aplicación web full-stack para la gestión de estudiantes. Implementa operaciones CRUD completas (crear, leer, actualizar, eliminar) sobre una base de datos MySQL, expuestas mediante una API REST construida con Spring Boot y consumidas desde una interfaz web sencilla.',
+    stack: ['Java', 'Spring Boot', 'MySQL', 'JPA', 'REST'],
+    emoji: '🎓',
+    accent: '#38bdf8',
+    highlights: [
+      'API REST con Spring Boot',
+      'CRUD completo de estudiantes',
+      'Persistencia con MySQL y JPA',
+      'Arquitectura por capas',
+    ],
+    category: 'util',
+    year: '2026',
+    repoUrl: 'https://github.com/Ferglow/estudiantes',
+  },
+  {
+    id: 'inventario',
+    title: 'Sistema de Inventario',
+    description: 'Gestión de inventario y stock con Java, Spring Boot y MySQL: control de productos y existencias.',
+    longDescription:
+      'Sistema full-stack para el control de inventario de productos. Permite registrar y administrar artículos, actualizar existencias y consultar el estado del stock en tiempo real, mediante una API REST en Spring Boot con persistencia en MySQL.',
+    stack: ['Java', 'Spring Boot', 'MySQL', 'JPA', 'REST'],
+    emoji: '📦',
+    accent: '#34d399',
+    highlights: [
+      'Control de stock y existencias',
+      'API REST con Spring Boot',
+      'Persistencia en MySQL',
+      'CRUD de productos',
+    ],
+    category: 'util',
+    year: '2026',
+    repoUrl: 'https://github.com/Ferglow/inventario',
+  },
 ]
 
 export const experience: Experience[] = [
