@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, type PointerEvent } from 'react'
-import { motion } from 'framer-motion'
+import { LazyMotion, domMax, m } from 'framer-motion'
 import { X, Minus, Square, Copy } from 'lucide-react'
 import { useWindowStore } from '../../../store/windowStore'
 import { getAppDefinition } from '../../../data/apps'
@@ -108,13 +108,14 @@ export function WindowFrame({ window }: WindowFrameProps) {
     : 'shadow-lg shadow-black/30 opacity-95'
 
   return (
-    <motion.div
-      data-testid="window-frame"
-      className={`absolute flex flex-col overflow-hidden rounded-lg bg-[var(--color-window)] text-[var(--color-text)] ${focusClass}`}
-      style={{
-        left: window.x,
-        top: window.y,
-        width: window.maximized ? '100%' : window.width,
+    <LazyMotion features={domMax} strict>
+      <m.div
+        data-testid="window-frame"
+        className={`absolute flex flex-col overflow-hidden rounded-lg bg-[var(--color-window)] text-[var(--color-text)] ${focusClass}`}
+        style={{
+          left: window.x,
+          top: window.y,
+          width: window.maximized ? '100%' : window.width,
         height: window.maximized ? '100%' : window.height,
         zIndex: window.zIndex,
       }}
@@ -193,6 +194,7 @@ export function WindowFrame({ window }: WindowFrameProps) {
           </svg>
         </div>
       )}
-    </motion.div>
+      </m.div>
+    </LazyMotion>
   )
 }

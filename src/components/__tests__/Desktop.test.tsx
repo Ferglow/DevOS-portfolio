@@ -23,10 +23,11 @@ describe('Desktop', () => {
     expect(Object.values(state.windows)[0].appId).toBe('terminal')
   })
 
-  it('muestra un window-frame dedicado cuando hay una ventana abierta', () => {
+  it('muestra un window-frame dedicado cuando hay una ventana abierta', async () => {
     useWindowStore.getState().openApp('about')
     render(<Desktop />)
-    const frames = screen.getAllByTestId('window-frame')
+    // El WindowFrame se carga de forma perezosa: esperamos su resolución
+    const frames = await screen.findAllByTestId('window-frame')
     expect(frames).toHaveLength(1)
   })
 })

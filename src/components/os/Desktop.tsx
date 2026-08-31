@@ -1,7 +1,13 @@
+import { lazy, Suspense } from 'react'
 import { appRegistry } from '../../data/apps'
 import { useWindowStore } from '../../store/windowStore'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { WindowFrame } from '../windows/WindowFrame/WindowFrame'
+
+const WindowFrame = lazy(() =>
+  import('../windows/WindowFrame/WindowFrame').then((m) => ({
+    default: m.WindowFrame,
+  })),
+)
 
 export function Desktop() {
   const windows = useWindowStore((s) => s.windows)
@@ -15,7 +21,6 @@ export function Desktop() {
     openApp(appId)
     // En móvil, la ventana se abre maximizada para mejor usabilidad
     if (isMobile) {
-      // La ventana recién abierta queda enfocada
       const id = useWindowStore.getState().focusedId
       if (id) toggleMaximize(id)
     }
@@ -55,9 +60,17 @@ export function Desktop() {
       </div>
 
       {/* Ventanas abiertas */}
-      {openWindows.map((win) => (
-        <WindowFrame key={win.id} window={win} />
-      ))}
+      <Suspense
+        fallback={
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm text-[var(--color-text-dim)]">
+            Abriendo...
+          </div>
+        }
+      >
+        {openWindows.map((win) => (
+          <WindowFrame key={win.id} window={win} />
+        ))}
+      </Suspense>
     </div>
   )
 }
