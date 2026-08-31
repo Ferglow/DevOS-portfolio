@@ -42,14 +42,15 @@ export function Desktop() {
             : 'left-4 top-4 flex-col'
         }`}
       >
-        {appRegistry.map((app) => (
+        {appRegistry.map((app, i) => (
           <button
             key={app.id}
             onClick={() => handleOpen(app.id)}
-            className="group flex flex-col items-center gap-1 rounded-lg p-2 text-center transition-colors hover:bg-white/5 focus-visible:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            style={{ animationDelay: `${150 + i * 80}ms` }}
+            className="desktop-icon group flex flex-col items-center gap-1 rounded-lg p-2 text-center transition-colors hover:bg-white/5 focus-visible:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             aria-label={`Abrir ${app.name}`}
           >
-            <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-window-alt text-2xl shadow-md transition-transform group-hover:scale-105">
+            <span className="icon-tile flex h-12 w-12 items-center justify-center rounded-lg bg-window-alt text-2xl shadow-md transition-transform group-hover:scale-110 group-active:scale-95">
               <span aria-hidden>{app.icon}</span>
             </span>
             <span className="w-16 text-[11px] leading-tight text-[var(--color-text)] drop-shadow">
