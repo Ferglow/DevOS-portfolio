@@ -35,6 +35,14 @@ export interface Project {
   highlights: string[]
   category: 'dev' | 'creative' | 'util'
   year: string
+  caseStudy?: {
+    problem: string
+    solution: string
+    result: string
+    challenge?: string
+    techChoice?: string
+    keyDecisions?: string[]
+  }
 }
 
 export interface Experience {

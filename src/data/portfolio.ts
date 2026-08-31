@@ -114,6 +114,21 @@ export const projects: Project[] = [
     category: 'util',
     year: '2026',
     repoUrl: 'https://github.com/Ferglow/agenda-contactos',
+    caseStudy: {
+      problem:
+        'Necesitaba demostrar manejo del ciclo completo de desarrollo backend: modelado de datos, API REST y consumo desde el frontend.',
+      solution:
+        'Implementé una agenda de contactos con Spring Boot y MySQL, exponiendo una API REST con Spring Data JPA y una arquitectura por capas (model, repository, service, controller). El frontend consume la API con Fetch API.',
+      result:
+        'Un proyecto full-stack completo y funcional que muestra dominio de Java, Spring Boot y persistencia relacional, con CRUD operativo de contactos.',
+      challenge:
+        'Mantener una arquitectura limpia y por capas que separe responsabilidades entre el acceso a datos y la lógica de negocio.',
+      keyDecisions: [
+        'Spring Data JPA para la capa de persistencia',
+        'Arquitectura por capas para escalar el proyecto',
+        'Frontend sencillo que demuestra consumo real de la API',
+      ],
+    },
   },
   {
     id: 'estudiantes',
