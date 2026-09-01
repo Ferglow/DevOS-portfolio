@@ -9,7 +9,7 @@ export const profile: Profile = {
     'Me formé de forma autodidacta y a través de proyectos personales, lo que me dio una visión integral: sé consumir y construir APIs REST, conectar bases de datos y crear interfaces modernas y responsivas.',
     'Creo que el código bien hecho es una forma de arte: cada proyecto es una oportunidad para combinar lógica sólida con una estética cuidada.',
   ],
-  locatedIn: 'Tu Ciudad, País',
+  locatedIn: 'Mexico',
   email: 'fernando.a.h@outlook.com',
   avatarEmoji: '👨‍💻',
   socials: {
