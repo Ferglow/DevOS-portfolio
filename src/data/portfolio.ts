@@ -32,6 +32,7 @@ export const skills: Skill[] = [
   { name: 'Git / GitHub', category: 'tooling', level: 4, icon: '🌿' },
   { name: 'NPM', category: 'tooling', level: 4, icon: '📦' },
   { name: 'Node.js / Express', category: 'tooling', level: 3, icon: '🟢' },
+  { name: 'MySQL', category: 'other', level: 4, icon: '🐬' },
   { name: 'REST APIs', category: 'other', level: 4, icon: '🔌' },
   { name: 'Zustand', category: 'other', level: 3, icon: '🐻' },
   { name: 'Java / Spring Boot', category: 'other', level: 3, icon: '☕' },
@@ -167,6 +168,25 @@ export const projects: Project[] = [
     category: 'util',
     year: '2026',
     repoUrl: 'https://github.com/Ferglow/inventario',
+  },
+  {
+    id: 'mysql-recommender',
+    title: 'MySQL Recommender Engine',
+    description: 'Motor de recomendaciones híbrido con MySQL 8: colaborativo, contenido y Jaccard - API + Demo React.',
+    longDescription:
+      'Motor de recomendaciones e-commerce con MySQL 8 como protagonista. Implementa 4 estrategias (popular, colaborativo por co-ocurrencia, contenido y híbrido Jaccard) con CTEs, Window Functions, JSON y procedimientos almacenados. Backend Node/TS + Express y frontend React demo dockerizado.',
+    stack: ['MySQL 8', 'Node.js', 'TypeScript', 'Express', 'React', 'Docker'],
+    emoji: '🛒',
+    accent: '#f59e0b',
+    highlights: [
+      '4 algoritmos: popular, colaborativo, contenido, híbrido',
+      'SQL avanzado: CTEs, Window Functions, SP, vistas',
+      'API REST documentada + fallback cold-start',
+      'Demo React + Docker Compose',
+    ],
+    category: 'dev',
+    year: '2026',
+    repoUrl: 'https://github.com/Ferglow/MYSQL-RECOMMENDER',
   },
 ]
 
