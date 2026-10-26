@@ -44,6 +44,7 @@ export function WindowFrame({ window }: WindowFrameProps) {
   // Evitar que el contenido sea arrastrable accidentalmente
   const onPointerDown = (e: PointerEvent) => {
     if (e.target !== e.currentTarget) return
+    e.currentTarget.setPointerCapture(e.pointerId) // se arregla el arrastre de la ventana
     focusWindow(window.id)
     dragStart.current = {
       x: e.clientX,
@@ -60,7 +61,8 @@ export function WindowFrame({ window }: WindowFrameProps) {
     moveWindow(window.id, dragStart.current.winX + dx, dragStart.current.winY + dy)
   }
 
-  const onPointerUp = () => {
+  const onPointerUp = (e: PointerEvent) => {
+    e.currentTarget.setPointerCapture(e.pointerId)
     dragStart.current = null
   }
 
@@ -68,6 +70,7 @@ export function WindowFrame({ window }: WindowFrameProps) {
 
   const onResizeStart = (e: PointerEvent) => {
     e.stopPropagation()
+    e.currentTarget.setPointerCapture(e.pointerId) // cambiamos para la captura del puntero
     focusWindow(window.id)
     resizeStart.current = { x: e.clientX, y: e.clientY, w: window.width, h: window.height }
   }
@@ -79,7 +82,8 @@ export function WindowFrame({ window }: WindowFrameProps) {
     resizeWindow(window.id, resizeStart.current.w + dx, resizeStart.current.h + dy)
   }
 
-  const onResizeUp = () => {
+  const onResizeUp = (e: PointerEvent) => {  //resivimos el evento sobre la captura del puntero
+    e.currentTarget.releasePointerCapture(e.pointerId)
     resizeStart.current = null
   }
 
@@ -116,84 +120,83 @@ export function WindowFrame({ window }: WindowFrameProps) {
           left: window.x,
           top: window.y,
           width: window.maximized ? '100%' : window.width,
-        height: window.maximized ? '100%' : window.height,
-        zIndex: window.zIndex,
-      }}
-      initial={reducedMotion ? false : { opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-      layout={reducedMotion ? false : true}
-      onPointerDown={() => focusWindow(window.id)}
-      role="dialog"
-      aria-label={def?.name ?? window.appId}
-      aria-modal={window.isFocused}
-    >
-      {/* Barra de título */}
-      <div
-        className={`flex h-[40px] shrink-0 cursor-grab items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-window-alt)] px-3 active:cursor-grabbing ${
-          window.isFocused ? 'text-[var(--color-text)]' : 'text-[var(--color-text-dim)]'
-        }`}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
+          height: window.maximized ? '100%' : window.height,
+          zIndex: window.zIndex,
+        }}
+        initial={reducedMotion ? false : { opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+        layout={reducedMotion ? false : true}
+        onPointerDown={() => focusWindow(window.id)}
+        role="dialog"
+        aria-label={def?.name ?? window.appId}
+        aria-modal={window.isFocused}
       >
-        <div className="flex items-center gap-2 text-sm font-medium">
-          <span className="text-base" aria-hidden>{def?.icon}</span>
-          <span>{def?.name ?? window.appId}</span>
-        </div>
-
-        {/* Botones de ventana */}
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => minimizeWindow(window.id)}
-            aria-label="Minimizar"
-            title="Minimizar"
-            className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-dim)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
-          >
-            <Minus size={16} />
-          </button>
-          <button
-            onClick={() => toggleMaximize(window.id)}
-            aria-label={window.maximized ? 'Restaurar' : 'Maximizar'}
-            title={window.maximized ? 'Restaurar' : 'Maximizar'}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-dim)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
-          >
-            {window.maximized ? <Copy size={14} /> : <Square size={13} />}
-          </button>
-          <button
-            onClick={() => closeWindow(window.id)}
-            aria-label="Cerrar"
-            title="Cerrar"
-            className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-danger)] text-white transition-colors hover:opacity-80"
-          >
-            <X size={16} />
-          </button>
-        </div>
-      </div>
-
-      {/* Contenido */}
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        <AppContent appId={window.appId} windowId={window.id} />
-      </div>
-
-      {/* Handle de redimensionar (solo si es redimensionable) */}
-      {def?.resizable && !window.maximized && (
+        {/* Barra de título */}
         <div
-          className="absolute bottom-0 right-0 cursor-se-resize"
-          style={{ width: RESIZE_HANDLE * 2, height: RESIZE_HANDLE * 2 }}
-          onPointerDown={onResizeStart}
-          onPointerMove={onResizeMove}
-          onPointerUp={onResizeUp}
-          onPointerCancel={onResizeUp}
-          role="presentation"
+          className={`flex h-[40px] shrink-0 cursor-grab items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-window-alt)] px-3 active:cursor-grabbing ${window.isFocused ? 'text-[var(--color-text)]' : 'text-[var(--color-text-dim)]'
+            }`}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" className="absolute bottom-1 right-1 opacity-40">
-            <path d="M14 0 L14 14 L0 14 Z" fill="transparent" />
-            <rect x="7" y="7" width="7" height="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
-            <rect x="9.5" y="9.5" width="4.5" height="4.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          </svg>
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <span className="text-base" aria-hidden>{def?.icon}</span>
+            <span>{def?.name ?? window.appId}</span>
+          </div>
+
+          {/* Botones de ventana */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => minimizeWindow(window.id)}
+              aria-label="Minimizar"
+              title="Minimizar"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-dim)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
+            >
+              <Minus size={16} />
+            </button>
+            <button
+              onClick={() => toggleMaximize(window.id)}
+              aria-label={window.maximized ? 'Restaurar' : 'Maximizar'}
+              title={window.maximized ? 'Restaurar' : 'Maximizar'}
+              className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--color-text-dim)] transition-colors hover:bg-[var(--color-border)] hover:text-[var(--color-text)]"
+            >
+              {window.maximized ? <Copy size={14} /> : <Square size={13} />}
+            </button>
+            <button
+              onClick={() => closeWindow(window.id)}
+              aria-label="Cerrar"
+              title="Cerrar"
+              className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--color-danger)] text-white transition-colors hover:opacity-80"
+            >
+              <X size={16} />
+            </button>
+          </div>
         </div>
-      )}
+
+        {/* Contenido */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <AppContent appId={window.appId} windowId={window.id} />
+        </div>
+
+        {/* Handle de redimensionar (solo si es redimensionable) */}
+        {def?.resizable && !window.maximized && (
+          <div
+            className="absolute bottom-0 right-0 cursor-se-resize"
+            style={{ width: RESIZE_HANDLE * 2, height: RESIZE_HANDLE * 2 }}
+            onPointerDown={onResizeStart}
+            onPointerMove={onResizeMove}
+            onPointerUp={onResizeUp}
+            onPointerCancel={onResizeUp}
+            role="presentation"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" className="absolute bottom-1 right-1 opacity-40">
+              <path d="M14 0 L14 14 L0 14 Z" fill="transparent" />
+              <rect x="7" y="7" width="7" height="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="9.5" y="9.5" width="4.5" height="4.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </div>
+        )}
       </m.div>
     </LazyMotion>
   )
