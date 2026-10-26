@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { appRegistry } from '../../data/apps'
 import { useWindowStore } from '../../store/windowStore'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import fondo from '../../assets/fullstack-dev-banner.jpg'
 
 const WindowFrame = lazy(() =>
   import('../windows/WindowFrame/WindowFrame').then((m) => ({
@@ -27,9 +28,10 @@ export function Desktop() {
   }
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-desktop">
+    <div className="relative h-full w-full overflow-hidden bg-desktop bg-cover bg-center bg-norepeat"
+      style = {{ backgroundImage: `url(${fondo}) `}}>
       {/* Fondo decorativo */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 bg-black/50">
         <div className="absolute -left-20 -top-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan/10 blur-3xl" />
       </div>
