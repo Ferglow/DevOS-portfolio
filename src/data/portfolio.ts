@@ -1,9 +1,9 @@
 import type { Experience, Profile, Project, Skill, Education } from './types'
 
 export const profile: Profile = {
-  name: 'Fernando Andrés',
-  role: 'Desarrollador Frontend',
-  tagline: 'Ingeniero en Informática convirtiendo ideas en interfaces web fluidas, accesibles y con personalidad.',
+  name: 'Fernando Andrés Hernandez',
+  role: 'Desarrollador Full Stack',
+  tagline: '💼 Ingeniero en Informática enfocado en construir aplicaciones web de punta a punta: interfaz, lógica de negocio y base de datos. Combino mi formación en desarrollo con experiencia real liderando proyectos de infraestructura de red, lo que me da una visión práctica de cómo funcionan los sistemas en producción.',
   summary: [
     'Ingeniero en Informática con 2 años de experiencia en el desarrollo de soluciones tecnológicas innovadoras y escalables. Actualmente enfocado en desarrollo frontend con React, TypeScript y diseño de interfaces.',
     'Me formé de forma autodidacta y a través de proyectos personales, lo que me dio una visión integral: sé consumir y construir APIs REST, conectar bases de datos y crear interfaces modernas y responsivas.',
